@@ -27,8 +27,10 @@
     .sidebar {
       width: 300px;
       background-color: #f0f0f0;
-      padding: 80px 20px 20px;
+      padding: 60px 20px 20px;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
     }
 
     .map {
@@ -69,6 +71,21 @@
       font-size: 0.9rem;
       color: green;
       margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .minimap {
+      height: 290px;
+      width: 105%;
+      margin-top: 10px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .minimap iframe {
+      width: 150%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
@@ -93,6 +110,11 @@
       <button type="submit">Envoyer</button>
     </form>
     <div class="log" id="log"></div>
+
+    <!-- ✅ Mini-carte ici -->
+    <div class="minimap">
+      <iframe id="miniMapFrame" src="https://becoming-oarfish-luckily.ngrok-free.app/distance"></iframe>
+    </div>
   </div>
 
   <div class="map">
@@ -127,9 +149,8 @@
     function handleSubmit(event) {
       event.preventDefault();
       sendUpdate(() => {
-        // Refresh the map iframe
-        document.getElementById("mapFrame").src = document.getElementById("mapFrame").src;
-      });
+        // Recharge les cartes après mise à jour
+        document.getElementById("mapFrame").src = document.getElementById("mapFrame").src;      });
     }
   </script>
 </body>

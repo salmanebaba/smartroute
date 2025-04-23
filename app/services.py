@@ -23,30 +23,52 @@ def calculate_distance(a: Bin, b: Bin) -> float:
     return geodesic((a.latitude, a.longitude), (b.latitude, b.longitude)).km
 
 
-def optimize_route(bins: list[Bin], start_point: tuple[float, float]) -> tuple[list[str], float]:
-    # Trier les poubelles du plus plein au moins plein
-    sorted_bins = sorted([b for b in bins if b.fill_level > 0], key=lambda b: b.fill_level, reverse=True)
+def optimize_route(bins: list[Bin], start_point: tuple[float, float], strategy: str = "distance") -> tuple[list[str], float]:
+    full_bins = [b for b in bins if b.fill_level > 0]
 
-    total_distance = 0.0
-    current_pos = start_point
-    ordered_ids = []
+    if not full_bins:
+        return [], 0.0
 
-    for bin in sorted_bins:
-        dist = osrm_distance(current_pos, (bin.latitude, bin.longitude))
-        total_distance += dist
-        ordered_ids.append(bin.id)
-        current_pos = (bin.latitude, bin.longitude)
+    if strategy == "fill_level":
+        # Suivre l'ordre des poubelles les plus pleines, pas de TSP
+        sorted_bins = sorted(full_bins, key=lambda b: b.fill_level, reverse=True)
+        total_distance = 0.0
+        current_pos = start_point
+        ordered_ids = []
 
-    # Retour au garage
-    total_distance += osrm_distance(current_pos, start_point)
+        for bin in sorted_bins:
+            dist = osrm_distance(current_pos, (bin.latitude, bin.longitude))
+            total_distance += dist
+            ordered_ids.append(bin.id)
+            current_pos = (bin.latitude, bin.longitude)
 
-    return ordered_ids, round(total_distance, 2)
+        total_distance += osrm_distance(current_pos, start_point)
+        return ordered_ids, round(total_distance, 2)
 
+    else:
+        # Optimisation par distance via OSRM `/trip`
+        coords = f"{start_point[1]},{start_point[0]}"
+        coords += ";" + ";".join(f"{b.longitude},{b.latitude}" for b in full_bins)
 
+        url = f"http://localhost:5000/trip/v1/driving/{coords}?source=first&roundtrip=true&overview=false"
+        
+        try:
+            response = requests.get(url)
+            data = response.json()
+            if data['code'] == 'Ok':
+                waypoints = data['waypoints'][1:]
+                ordered_ids = [full_bins[wp['waypoint_index'] - 1].id for wp in waypoints]
+                total_distance = data['trips'][0]['distance'] / 1000
+                return ordered_ids, round(total_distance, 2)
+        except Exception:
+            pass
 
-def generate_map_with_route(start_point):
-    ordered_ids, total_distance = optimize_route(bins, CAMION_START)
+        return [b.id for b in full_bins], 0.0
+
+def generate_map_with_route(start_point, strategy="distance"):
+    ordered_ids, total_distance = optimize_route(bins, CAMION_START, strategy=strategy)
     route_map = folium.Map(location=start_point)
+
 
     folium.Marker(
         location=start_point,
