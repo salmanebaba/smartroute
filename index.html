@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Bin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      padding: 10px 20px;
+      background-color: #1e88e5;
+      color: white;
+      font-size: 1.5rem;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .sidebar {
+      width: 300px;
+      background-color: #f0f0f0;
+      padding: 80px 20px 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .map {
+      flex: 1;
+      height: 100%;
+      padding-top: 60px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .log {
+      font-size: 0.9rem;
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>♻️ Smart Bin Dashboard</header>
+
+  <div class="sidebar">
+    <h3>Envoyer une mise à jour</h3>
+    <form id="updateForm" onsubmit="handleSubmit(event)">
+      <label for="binId">ID Poubelle</label>
+      <select id="binId">
+        <option value="1">bin_01</option>
+        <option value="2">bin_02</option>
+        <option value="3">bin_03</option>
+        <option value="4">bin_04</option>
+        <option value="5">bin_05</option>
+      </select>
+
+      <label for="fillLevel">Niveau de remplissage (%)</label>
+      <input type="number" id="fillLevel" min="0" max="100" />
+
+      <button type="submit">Envoyer</button>
+    </form>
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="map">
+    <iframe id="mapFrame" src="https://becoming-oarfish-luckily.ngrok-free.app/"></iframe>
+  </div>
+
+  <script>
+    function sendUpdate(callback) {
+      const id = document.getElementById("binId").value;
+      const fill = document.getElementById("fillLevel").value;
+      const log = document.getElementById("log");
+
+      fetch("https://becoming-oarfish-luckily.ngrok-free.app/update-bin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: id, fill_level: parseInt(fill) })
+      })
+      .then(res => res.ok ? res.json() : Promise.reject(res))
+      .then(data => {
+        log.innerText = `✅ Mise à jour envoyée pour ${id}`;
+        log.style.color = "green";
+        if (callback) callback();
+      })
+      .catch(err => {
+        log.innerText = "❌ Erreur lors de l'envoi";
+        log.style.color = "red";
+      });
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      sendUpdate(() => {
+        // Refresh the map iframe
+        document.getElementById("mapFrame").src = document.getElementById("mapFrame").src;
+      });
+    }
+  </script>
+</body>
+</html>
