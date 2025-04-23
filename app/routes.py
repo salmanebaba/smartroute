@@ -2,17 +2,10 @@ from fastapi import APIRouter, HTTPException
 from datetime import datetime
 from fastapi.responses import HTMLResponse
 from .mock_data import bins, CAMION_START
-from .services import generate_map_with_route, optimize_route
-from .models import RouteResponse
+from .services import generate_map_with_route
 
 router = APIRouter()
 
-
-
-@router.get("/optimize-route", response_model=RouteResponse)
-def get_optimized_route():
-    ordered_ids, total_distance = optimize_route(bins, CAMION_START)
-    return RouteResponse(ordered_bins=ordered_ids, total_distance_km=total_distance)
 
 @router.get("/", response_class=HTMLResponse)
 def get_map():
