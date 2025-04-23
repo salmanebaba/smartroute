@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+geopy
+requests
+pyngrok
+folium
+shapely
