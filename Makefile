@@ -14,5 +14,5 @@ serve:
 git:
 	git add .
 	git commit -m "update"
-	git push origin master
+	git push origin main
 	@echo "Mise à jour de la branche principale sur GitHub."
