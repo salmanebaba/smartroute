@@ -47,16 +47,6 @@ URL="https://becoming-oarfish-luckily.ngrok-free.app/"
 echo "✅ Ton API est accessible publiquement à :"
 echo "$URL"
 
-WEB="local.html"
-
-# Ouvre dans le navigateur si possible
-if command -v xdg-open > /dev/null; then
-    xdg-open "$WEB"
-elif command -v open > /dev/null; then
-    open "$WEB"
-else
-    echo "🌍 Ouvre manuellement : $WEB"
-fi
 # Maintenir le script actif
 echo "🔁 Appuyez sur CTRL+C pour tout arrêter"
 while true; do sleep 1; done
