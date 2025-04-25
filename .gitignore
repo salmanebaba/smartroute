@@ -1,6 +1,6 @@
 maps/*
 maps/hello.txt
 __pycache__/
-curl.txt
 log/*
 log/hello.txt
+Makefile.ng
