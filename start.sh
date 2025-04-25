@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# 👉 Empêche la mise en veille pendant que ce script tourne
 if [[ "$1" != "--no-inhibit" ]]; then
   exec systemd-inhibit --why="Smart Bin server running" --what=sleep "$0" --no-inhibit
 fi
@@ -48,7 +47,7 @@ URL="https://becoming-oarfish-luckily.ngrok-free.app/"
 echo "✅ Ton API est accessible publiquement à :"
 echo "$URL"
 
-WEB="https://bin.salmanebaba.me"
+WEB="local.html"
 
 # Ouvre dans le navigateur si possible
 if command -v xdg-open > /dev/null; then

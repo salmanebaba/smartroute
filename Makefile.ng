@@ -1,15 +1,20 @@
-ngrok:
-	@mkdir -p ~/.config/ngrok
-    @echo 'version: "3"' > ~/.config/ngrok/ngrok.yml
-    @echo 'agent:' >> ~/.config/ngrok/ngrok.yml
-    @echo '    authtoken: 2w41vM8bZSyWuK6GR64AyLdG9dK_3Bqf4xSPApqpWSWwgYdAY' >> ~/.config/ngrok/ngrok.yml
-    @echo 'tunnels:' >> ~/.config/ngrok/ngrok.yml
-    @echo '    api:' >> ~/.config/ngrok/ngrok.yml
-    @echo '        proto: http' >> ~/.config/ngrok/ngrok.yml
-    @echo '        addr: 8000' >> ~/.config/ngrok/ngrok.yml
-    @echo '        domain: becoming-oarfish-luckily.ngrok-free.app' >> ~/.config/ngrok/ngrok.yml
 git:
 	git add .
 	git commit -m "update"
 	git push origin main
 	@echo "Mise à jour de la branche principale sur GitHub."
+
+ngrok:
+	curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+	echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+	sudo apt update
+	sudo apt install -y ngrok
+	mkdir -p ~/.config/ngrok
+	@echo 'version: "3"' > ~/.config/ngrok/ngrok.yml
+	@echo 'agent:' >> ~/.config/ngrok/ngrok.yml
+	@echo '    authtoken: 2w41vM8bZSyWuK6GR64AyLdG9dK_3Bqf4xSPApqpWSWwgYdAY' >> ~/.config/ngrok/ngrok.yml
+	@echo 'tunnels:' >> ~/.config/ngrok/ngrok.yml
+	@echo '    api:' >> ~/.config/ngrok/ngrok.yml
+	@echo '        proto: http' >> ~/.config/ngrok/ngrok.yml
+	@echo '        addr: 8000' >> ~/.config/ngrok/ngrok.yml
+	@echo '        domain: becoming-oarfish-luckily.ngrok-free.app' >> ~/.config/ngrok/ngrok.yml
