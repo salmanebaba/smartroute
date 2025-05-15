@@ -46,7 +46,9 @@ sleep 4
 URL="https://becoming-oarfish-luckily.ngrok-free.app/"
 echo "✅ Ton API est accessible publiquement à :"
 echo "$URL"
-
+xdg-open "file://"$(pwd)"/local.html"
 # Maintenir le script actif
 echo "🔁 Appuyez sur CTRL+C pour tout arrêter"
+
+
 while true; do sleep 1; done
