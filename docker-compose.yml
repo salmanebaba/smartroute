@@ -22,11 +22,12 @@ services:
   frontend:
     image: nginx:alpine
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./frontend:/usr/share/nginx/html:ro
     ports:
       - "8080:80"
     networks:
       - appnet
+
 
   ngrok:
     image: ngrok/ngrok

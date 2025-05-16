@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Smart Bin Dashboard</title>
+  <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=IZAj2VwVrqfb&format=png&color=000000" sizes="64x64">
   <style>
     body {
       margin: 0;
@@ -113,12 +114,12 @@
 
     <!-- ✅ Mini-carte ici -->
     <div class="minimap">
-      <iframe id="miniMapFrame" src="http://domain=becoming-oarfish-luckily.ngrok-free.app/distance"></iframe>
+      <iframe id="miniMapFrame" src="https://becoming-oarfish-luckily.ngrok-free.app/distance"></iframe>
     </div>
   </div>
 
   <div class="map">
-    <iframe id="mapFrame" src="http://domain=becoming-oarfish-luckily.ngrok-free.app/"></iframe>
+    <iframe id="mapFrame" src="https://becoming-oarfish-luckily.ngrok-free.app/"></iframe>
   </div>
 
   <script>
@@ -127,7 +128,7 @@
       const fill = document.getElementById("fillLevel").value;
       const log = document.getElementById("log");
 
-      fetch("http://domain=becoming-oarfish-luckily.ngrok-free.app/update-bin", {
+      fetch("https://becoming-oarfish-luckily.ngrok-free.app/update-bin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -150,7 +151,7 @@
       event.preventDefault();
       sendUpdate(() => {
         // Recharge les cartes après mise à jour
-        document.getElementById("mapFrame").src = document.getElementById("mapFrame").src;      });
+        document.getElementById("mapFrame").src = document.getElementById("mapFrame").src});
     }
   </script>
 </body>
