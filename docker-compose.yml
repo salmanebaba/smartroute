@@ -22,7 +22,7 @@ services:
   frontend:
     image: nginx:alpine
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - ./:/usr/share/nginx/html:ro
     ports:
       - "8080:80"
     networks:
