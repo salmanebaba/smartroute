@@ -113,12 +113,12 @@
 
     <!-- ✅ Mini-carte ici -->
     <div class="minimap">
-      <iframe id="miniMapFrame" src="http://0.0.0.0:8000/distance"></iframe>
+      <iframe id="miniMapFrame" src="http://domain=becoming-oarfish-luckily.ngrok-free.app/distance"></iframe>
     </div>
   </div>
 
   <div class="map">
-    <iframe id="mapFrame" src="http://0.0.0.0:8000/"></iframe>
+    <iframe id="mapFrame" src="http://domain=becoming-oarfish-luckily.ngrok-free.app/"></iframe>
   </div>
 
   <script>
@@ -127,7 +127,7 @@
       const fill = document.getElementById("fillLevel").value;
       const log = document.getElementById("log");
 
-      fetch("http://0.0.0.0:8000/update-bin", {
+      fetch("http://domain=becoming-oarfish-luckily.ngrok-free.appupdate-bin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
