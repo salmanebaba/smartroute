@@ -1,5 +1,5 @@
 from datetime import datetime
-from .models import Bin
+from models import Bin
 
 bins = [
     Bin(id="1", latitude=33.981631, longitude= -6.864980, fill_level=20, last_updated=datetime.now()),

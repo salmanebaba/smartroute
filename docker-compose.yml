@@ -1,0 +1,44 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    networks:
+      - appnet
+
+
+  osrm:
+    build:
+      context: ./osrm
+    volumes:
+      - ./maps:/data
+    ports:
+      - "5000:5000"
+    networks:
+      - appnet
+
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    networks:
+      - appnet
+
+  ngrok:
+    image: ngrok/ngrok
+    depends_on:
+      - backend
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}  # Pass your ngrok token here
+    command: http backend:8000 --domain=becoming-oarfish-luckily.ngrok-free.app
+    networks:
+      - appnet
+
+
+
+networks:
+  appnet:

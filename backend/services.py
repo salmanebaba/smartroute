@@ -2,13 +2,13 @@ import folium
 import requests
 from geopy.distance import geodesic
 from folium.features import DivIcon
-from .models import Bin
-from .mock_data import bins, CAMION_START
+from models import Bin
+from mock_data import bins, CAMION_START
 
 
 def osrm_distance(start: tuple[float, float], end: tuple[float, float]) -> float:
     """Use OSRM to calculate real distance between two points."""
-    url = f"http://localhost:5000/route/v1/driving/{start[1]},{start[0]};{end[1]},{end[0]}?overview=false"
+    url = f"http://osrm:5000/route/v1/driving/{start[1]},{start[0]};{end[1]},{end[0]}?overview=false"
     try:
         response = requests.get(url)
         data = response.json()
@@ -78,7 +78,7 @@ def optimize_route(bins: list[Bin], start_point: tuple[float, float], strategy: 
         coords = f"{start_point[1]},{start_point[0]}"
         coords += ";" + ";".join(f"{b.longitude},{b.latitude}" for b in full_bins)
 
-        url = f"http://localhost:5000/trip/v1/driving/{coords}?source=first&roundtrip=true&overview=false"
+        url = f"http://osrm:5000/trip/v1/driving/{coords}?source=first&roundtrip=true&overview=false"
         try:
             response = requests.get(url)
             data = response.json()
@@ -125,7 +125,7 @@ def generate_map_with_route(start_point, strategy="distance"):
     for i in range(len(route_points) - 1):
         start = route_points[i]
         end = route_points[i + 1]
-        url = f"http://localhost:5000/route/v1/driving/{start[1]},{start[0]};{end[1]},{end[0]}?overview=full&geometries=geojson"
+        url = f"http://osrm:5000/route/v1/driving/{start[1]},{start[0]};{end[1]},{end[0]}?overview=full&geometries=geojson"
         try:
             resp = requests.get(url)
             data = resp.json()

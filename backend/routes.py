@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
-from .mock_data import bins, CAMION_START
-from .services import generate_map_with_route
+from mock_data import bins, CAMION_START
+from services import generate_map_with_route
 
 router = APIRouter()
 

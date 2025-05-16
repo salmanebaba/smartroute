@@ -1,6 +1,4 @@
+
+# Dossier des données OSRM (exclure les fichiers lourds, mais garder le dossier)
 maps/*
-maps/hello.txt
-__pycache__/
-log/*
-log/hello.txt
-Makefile.ng
+!maps/.gitkeep
