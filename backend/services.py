@@ -93,6 +93,93 @@ def optimize_route(bins: list[Bin], start_point: tuple[float, float], strategy: 
         return [b.id for b in full_bins], 0.0
 
 
+def get_route_geojson(strategy: str = "distance") -> dict:
+    """Return route data as JSON with GeoJSON polyline coordinates for Leaflet rendering."""
+    ordered_ids, total_distance = optimize_route(bins, CAMION_START, strategy=strategy)
+
+    bin_dict = {b.id: b for b in bins}
+    route_points = [CAMION_START] + [(bin_dict[bid].latitude, bin_dict[bid].longitude) for bid in ordered_ids] + [CAMION_START]
+
+    # Build per-segment polylines from OSRM
+    segments = []
+    for i in range(len(route_points) - 1):
+        start = route_points[i]
+        end = route_points[i + 1]
+        url = f"http://osrm:5000/route/v1/driving/{start[1]},{start[0]};{end[1]},{end[0]}?overview=full&geometries=geojson"
+        try:
+            resp = requests.get(url)
+            data = resp.json()
+            if data["code"] == "Ok":
+                coords = [[lat, lon] for lon, lat in data["routes"][0]["geometry"]["coordinates"]]
+                distance_m = data["routes"][0]["distance"]
+                duration_s = data["routes"][0]["duration"]
+                segments.append({
+                    "from": ordered_ids[i - 1] if i > 0 else "garage",
+                    "to": ordered_ids[i] if i < len(ordered_ids) else "garage",
+                    "coordinates": coords,
+                    "distance_km": round(distance_m / 1000, 2),
+                    "duration_min": round(duration_s / 60, 1),
+                })
+            else:
+                segments.append({
+                    "from": ordered_ids[i - 1] if i > 0 else "garage",
+                    "to": ordered_ids[i] if i < len(ordered_ids) else "garage",
+                    "coordinates": [[start[0], start[1]], [end[0], end[1]]],
+                    "distance_km": 0,
+                    "duration_min": 0,
+                })
+        except Exception:
+            segments.append({
+                "from": ordered_ids[i - 1] if i > 0 else "garage",
+                "to": ordered_ids[i] if i < len(ordered_ids) else "garage",
+                "coordinates": [[start[0], start[1]], [end[0], end[1]]],
+                "distance_km": 0,
+                "duration_min": 0,
+            })
+
+    total_duration = sum(s["duration_min"] for s in segments)
+
+    return {
+        "strategy": strategy,
+        "ordered_bin_ids": ordered_ids,
+        "total_distance_km": total_distance,
+        "total_duration_min": round(total_duration, 1),
+        "garage": {"latitude": CAMION_START[0], "longitude": CAMION_START[1]},
+        "segments": segments,
+    }
+
+
+def get_bin_stats() -> dict:
+    """Compute aggregate statistics across all bins."""
+    total = len(bins)
+    critical = sum(1 for b in bins if b.fill_level >= 80)
+    warning = sum(1 for b in bins if 50 <= b.fill_level < 80)
+    normal = total - critical - warning
+    avg_fill = round(sum(b.fill_level for b in bins) / total, 1) if total else 0
+    avg_battery = round(sum(b.battery for b in bins) / total, 1) if total else 0
+
+    # Simulated savings
+    baseline_distance = 12.5  # km (fixed route)
+    _, optimized = optimize_route(bins, CAMION_START, strategy="fill_level")
+    distance_saved = round(max(0, baseline_distance - optimized), 2)
+    co2_saved = round(distance_saved * 2.68, 1)  # avg kg CO2 per km for a truck
+
+    return {
+        "total_bins": total,
+        "critical": critical,
+        "warning": warning,
+        "normal": normal,
+        "avg_fill_level": avg_fill,
+        "avg_battery": avg_battery,
+        "optimized_distance_km": optimized,
+        "distance_saved_km": distance_saved,
+        "co2_saved_kg": co2_saved,
+        "collection_efficiency": round((1 - optimized / baseline_distance) * 100, 1) if baseline_distance else 0,
+    }
+
+
+# ── Legacy Folium map generation (kept for backward compatibility) ──
+
 def generate_map_with_route(start_point, strategy="distance"):
     ordered_ids, total_distance = optimize_route(bins, CAMION_START, strategy=strategy)
     route_map = folium.Map(location=start_point)
