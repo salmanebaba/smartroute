@@ -2,3 +2,4 @@
 # Dossier des données OSRM (exclure les fichiers lourds, mais garder le dossier)
 maps/*
 !maps/.gitkeep
+.env

@@ -1,5 +1,15 @@
-geopy
-folium
+# Serveur & API
 fastapi>=0.68.0
 uvicorn>=0.15.0
+
+# Azure & Données
+azure-cosmos
+python-dotenv  # <--- INDISPENSABLE pour lire ton fichier .env
+
+# Cartographie & Géolocalisation
+geopy
+folium
+
+# Utilitaires
 requests>=2.26.0
+pydantic
