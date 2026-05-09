@@ -1,15 +1,26 @@
-# Serveur & API
-fastapi>=0.68.0
-uvicorn>=0.15.0
+# Server & API Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
 
-# Azure & Données
-azure-cosmos
-python-dotenv  # <--- INDISPENSABLE pour lire ton fichier .env
+# Azure & Database
+azure-cosmos>=4.5.0
 
-# Cartographie & Géolocalisation
-geopy
-folium
+# Environment & Configuration
+python-dotenv>=1.0.0
 
-# Utilitaires
-requests>=2.26.0
-pydantic
+# Geographic & Mapping
+geopy>=2.3.0
+folium>=0.14.0
+
+# Data Validation
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Utilities
+requests>=2.31.0
+
+# Logging & Monitoring
+python-json-logger>=2.0.7
+
+# Type hints
+typing-extensions>=4.8.0
