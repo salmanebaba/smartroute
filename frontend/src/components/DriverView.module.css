@@ -1,0 +1,191 @@
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 16px;
+  padding: 20px 24px;
+  height: calc(100vh - 58px);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.progressCard {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+}
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.progressLabel {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text3);
+  font-weight: 500;
+}
+.progressCount {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--teal);
+}
+.progressTrack {
+  height: 4px;
+  background: var(--bg2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.progressFill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.progressPct {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  text-align: right;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stratPad {
+  padding: 12px 14px;
+}
+
+.stopList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 12px;
+}
+
+.stopRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg4);
+  animation: slideIn 0.2s ease both;
+  transition: opacity 0.3s, border-color 0.15s;
+}
+.stopRow:hover { border-color: var(--border2); }
+.stopDone { opacity: 0.4; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.stopNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--teal-bg);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--mono);
+  transition: all 0.2s;
+}
+.numDone {
+  background: rgba(47,255,160,0.2);
+  border-color: var(--teal);
+}
+
+.stopInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.stopId {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+}
+.stopDetail {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.doneBtn {
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.doneBtn:hover { border-color: var(--teal); color: var(--teal); }
+.doneBtnActive {
+  border-color: var(--teal) !important;
+  color: var(--teal) !important;
+  background: var(--teal-bg) !important;
+}
+
+.stopCount {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.mapWrap {
+  min-height: 0;
+}
+
+.mapMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text2);
+  font-family: var(--mono);
+}
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}

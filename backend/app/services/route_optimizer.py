@@ -2,7 +2,7 @@
 Route optimization logic for bin collection.
 Implements various strategies for optimal routing.
 """
-from typing import List, Tuple
+from typing import List, Tuple, Union, Dict
 from geopy.distance import geodesic
 from app.models.schemas import Bin, RouteStop, OptimizedRoute
 from app.config import TRUCK_START
@@ -12,13 +12,20 @@ class RouteOptimizer:
     """Handles route optimization algorithms."""
     
     @staticmethod
-    def optimize_distance(bins: List[Bin], start_point: Tuple[float, float] = TRUCK_START) -> OptimizedRoute:
+    def _normalize_location(location: Union[Tuple[float, float], Dict[str, float]]) -> Tuple[float, float]:
+        """Convert dict location to tuple."""
+        if isinstance(location, dict):
+            return (location['lat'], location['lng'])
+        return location
+    
+    @staticmethod
+    def optimize_distance(bins: List[Bin], start_point: Union[Tuple[float, float], Dict] = TRUCK_START) -> OptimizedRoute:
         """
         Optimize route using nearest neighbor algorithm (minimize distance).
         
         Args:
             bins: List of bins to visit
-            start_point: Starting geographic point (lat, lng)
+            start_point: Starting geographic point (lat, lng) or dict with lat/lng
             
         Returns:
             OptimizedRoute: Optimized route with stops
@@ -27,7 +34,7 @@ class RouteOptimizer:
             return OptimizedRoute(strategy="distance", total_distance=0, stops=[])
         
         remaining_bins = bins.copy()
-        current_location = start_point
+        current_location = RouteOptimizer._normalize_location(start_point)
         total_distance = 0
         stops = []
         order = 1
@@ -59,13 +66,13 @@ class RouteOptimizer:
         )
     
     @staticmethod
-    def optimize_fill_level(bins: List[Bin], start_point: Tuple[float, float] = TRUCK_START) -> OptimizedRoute:
+    def optimize_fill_level(bins: List[Bin], start_point: Union[Tuple[float, float], Dict] = TRUCK_START) -> OptimizedRoute:
         """
         Optimize route by prioritizing bins with highest fill levels.
         
         Args:
             bins: List of bins to visit
-            start_point: Starting geographic point
+            start_point: Starting geographic point (lat, lng) or dict with lat/lng
             
         Returns:
             OptimizedRoute: Route prioritized by fill level
@@ -76,7 +83,7 @@ class RouteOptimizer:
         # Sort bins by fill level (descending)
         sorted_bins = sorted(bins, key=lambda b: b.fill_level, reverse=True)
         
-        current_location = start_point
+        current_location = RouteOptimizer._normalize_location(start_point)
         total_distance = 0
         stops = []
         
@@ -99,13 +106,13 @@ class RouteOptimizer:
         )
     
     @staticmethod
-    def optimize_time(bins: List[Bin], start_point: Tuple[float, float] = TRUCK_START, avg_speed_kmh: float = 30) -> OptimizedRoute:
+    def optimize_time(bins: List[Bin], start_point: Union[Tuple[float, float], Dict] = TRUCK_START, avg_speed_kmh: float = 30) -> OptimizedRoute:
         """
         Optimize route by minimizing travel time (using distance and average speed).
         
         Args:
             bins: List of bins to visit
-            start_point: Starting geographic point
+            start_point: Starting geographic point (lat, lng) or dict with lat/lng
             avg_speed_kmh: Average truck speed in km/h
             
         Returns:

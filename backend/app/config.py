@@ -17,7 +17,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 # Geographic Configuration
 TRUCK_START_LAT = 33.979448
 TRUCK_START_LNG = -6.866329
-TRUCK_START = (TRUCK_START_LAT, TRUCK_START_LNG)
+TRUCK_START = {"lat": TRUCK_START_LAT, "lng": TRUCK_START_LNG}
 
 # CORS Configuration
 CORS_ORIGINS = ["*"]  # Restrict in production

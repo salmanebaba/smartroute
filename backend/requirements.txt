@@ -24,3 +24,7 @@ python-json-logger>=2.0.7
 
 # Type hints
 typing-extensions>=4.8.0
+
+pandas
+scikit-learn
+joblib
