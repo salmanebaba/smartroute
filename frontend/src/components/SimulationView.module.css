@@ -1,0 +1,139 @@
+.layout { 
+  padding: 20px 24px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+  height: calc(100vh - 58px); 
+}
+
+.topSection { 
+  display: flex; 
+  gap: 16px; 
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.subtitle {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.inputGroup { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  margin-top: 4px;
+}
+
+.datePicker { 
+  background: var(--bg2); 
+  border: 1px solid var(--border); 
+  color: var(--text); 
+  padding: 8px 14px; 
+  border-radius: 8px; 
+  font-family: var(--mono); 
+  font-size: 14px;
+  outline: none; 
+  transition: border-color 0.2s;
+}
+
+.datePicker:focus { 
+  border-color: var(--teal); 
+}
+
+/* Customizing the datetime picker icon for dark mode (Chrome/Edge) */
+::-webkit-calendar-picker-indicator { 
+  filter: invert(1); 
+  cursor: pointer; 
+  opacity: 0.6;
+}
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.refreshBtn { 
+  background: var(--teal-bg);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  padding: 8px 16px; 
+  border-radius: 8px; 
+  font-size: 12px; 
+  font-weight: 600;
+  cursor: pointer; 
+  transition: all 0.2s; 
+}
+
+.refreshBtn:hover:not(:disabled) { 
+  background: var(--teal); 
+  color: #000; 
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kpiGrid { 
+  flex: 1.5;
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 16px; 
+}
+
+.twoCol { 
+  display: grid; 
+  grid-template-columns: 1fr 1.5fr; 
+  gap: 16px; 
+  flex: 1;
+  min-height: 0;
+}
+
+.listWrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty { 
+  padding: 40px; 
+  text-align: center; 
+  color: var(--text3); 
+  font-size: 13px; 
+}
+
+.meta { 
+  font-family: var(--mono); 
+  font-size: 10px; 
+  color: var(--text3); 
+}
+
+.mapWrap { 
+  position: relative; 
+  flex: 1; 
+  display: flex; 
+  background: var(--bg4); 
+  min-height: 0; 
+}
+
+.frame { 
+  flex: 1; 
+  width: 100%; 
+  border: none; 
+}
+
+.mapLoading { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 100%; 
+  gap: 10px; 
+  color: var(--text3); 
+  font-size: 13px; 
+}

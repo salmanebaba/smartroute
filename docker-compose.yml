@@ -1,13 +1,13 @@
-
 services:
   backend:
     build:
       context: ./backend
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     networks:
       - appnet
-
 
   osrm:
     build:
@@ -20,14 +20,17 @@ services:
       - appnet
 
   frontend:
-    image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
+    build:
+      context: ./frontend
+      args:
+        # Tell Vite to point to the Nginx proxy path
+        - VITE_API_URL=/api
     ports:
       - "8080:80"
+    depends_on:
+      - backend
     networks:
       - appnet
-
 
   ngrok:
     image: ngrok/ngrok
@@ -38,8 +41,6 @@ services:
     command: http backend:8000 --domain=becoming-oarfish-luckily.ngrok-free.app
     networks:
       - appnet
-
-
 
 networks:
   appnet:

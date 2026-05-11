@@ -1,0 +1,14 @@
+.root { min-height: 100vh; display: flex; flex-direction: column; }
+.nav { height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+.tabs { display: flex; gap: 2px; background: var(--bg4); padding: 3px; border-radius: 10px; border: 1px solid var(--border); }
+.tab { padding: 5px 20px; border-radius: 7px; border: none; background: transparent; font-size: 12px; font-family: var(--font); font-weight: 500; color: var(--text3); transition: all 0.15s; }
+.tab:hover { color: var(--text2); }
+.tabActive { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.status { display: flex; align-items: center; gap: 7px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+.dotOnline { background: var(--teal); animation: pulse 2s ease-in-out infinite; }
+.dotOffline { background: var(--amber); }
+.dotChecking { background: var(--text3); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+.statusText { font-family: var(--mono); font-size: 11px; color: var(--text3); }

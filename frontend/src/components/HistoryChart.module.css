@@ -1,0 +1,6 @@
+.wrap { padding:14px 16px 8px; }
+.empty { height:220px; display:flex; align-items:center; justify-content:center; color:var(--text3); font-size:12px; }
+.tooltip { background:var(--bg2); border:1px solid var(--border2); border-radius:8px; padding:10px 14px; font-size:11px; min-width:140px; }
+.ttDay { font-family:var(--mono); font-weight:500; color:var(--text); margin-bottom:6px; font-size:12px; }
+.ttRow { display:flex; justify-content:space-between; gap:12px; padding:2px 0; }
+.ttVal { font-family:var(--mono); font-weight:500; }

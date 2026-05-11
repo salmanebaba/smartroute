@@ -1,0 +1,4 @@
+.wrap { position:relative; display:flex; flex-direction:column; }
+.frame { flex:1; width:100%; border:none; background:var(--bg4); min-height:0; }
+.hint { padding:7px 16px; font-size:10px; color:var(--text3); border-top:1px solid var(--border); background:var(--bg2); }
+.hint code { font-family:var(--mono); color:var(--teal); }
